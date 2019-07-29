@@ -15,9 +15,8 @@ const Main = props => {
 
   return (
     <div className={cn("root")}>
-      <p>LED status: {led2}</p>
       <button className={cn(led2)} onClick={toggle}>
-        Toggle LED
+        LED2
       </button>
     </div>
   );

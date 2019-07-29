@@ -14,18 +14,22 @@ const req = createRequest({
 });
 
 const send = async () => {
-  const file = await promisify(readFile)("../.env", "utf-8"),
-    strings = file.split("\n").filter(data => data.trim()),
-    envs = strings.reduce((acc, cur) => {
-      const pair = cur.split("="),
-        key = pair[0].trim(),
-        value = pair[1].replace(/"/g, "").trim();
+  try {
+    const file = await promisify(readFile)("../.env", "utf-8"),
+      strings = file.split("\n").filter(data => data.trim()),
+      envs = strings.reduce((acc, cur) => {
+        const pair = cur.split("="),
+          key = pair[0].trim(),
+          value = pair[1].replace(/"/g, "").trim();
 
-      acc[key] = key === "NODE_ENV" ? "production" : value;
-      return acc;
-    }, {});
-  const res = await req.patch("/", envs);
-  l(res);
+        acc[key] = key === "NODE_ENV" ? "production" : value;
+        return acc;
+      }, {});
+    const res = await req.patch("/", envs);
+    l(res);
+  } catch (e) {
+    l(e);
+  }
 };
 
 send();
