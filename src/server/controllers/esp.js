@@ -6,13 +6,14 @@ const request = createRequest({ baseURL });
 const getHandler = async (req, res) => {
   const { state } = req.query;
 
-  const status = await request.get("/esp", {
-    state
-  });
-  // const status = await request.get("/esp", {
-  //   state,
-  //   other: JSON.stringify([1, 3])
-  // });
+  let status = false;
+  try {
+    status = await request.get("/esp", {
+      state
+    });
+  } catch (e) {
+    l(e);
+  }
 
   res.send(status);
 };

@@ -3,16 +3,26 @@ import { req } from "../../services/request";
 
 export default (led, updateState) => {
   const toggle = async () => {
-    const status = await req.get("/esp", {
-      params: { state: "toggle" }
-    });
+    try {
+      const status = await req.get("/esp", {
+        params: { state: "toggle" }
+      });
+      l(status);
+    } catch (e) {
+      l(e);
+    }
 
     updateState({ led2: status ? "on" : "off" });
   };
 
   const init = () => {
     (async () => {
-      const status = await req.get("/esp", {});
+      try {
+        const status = await req.get("/esp", {});
+        l(status);
+      } catch (e) {
+        l(e);
+      }
       updateState({ led2: status ? "on" : "off" });
     })();
   };
