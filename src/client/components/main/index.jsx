@@ -9,9 +9,11 @@ const Main = props => {
       store: { led2 },
       updateState
     } = props,
-    { toggle, init } = fns(led2, updateState);
+    { toggle, init } = fns(updateState);
 
   useEffect(init, []);
+
+  console.log("led2", led2);
 
   return (
     <div className={cn("root")}>
