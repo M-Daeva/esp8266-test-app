@@ -3,6 +3,6 @@ const express = require("express"),
   { getHandler } = require("../controllers/esp"),
   erh = require("../services/erh");
 
-router.get("/", erh(getHandler));
+router.get("/", getHandler);
 
 module.exports = router;
