@@ -8,6 +8,8 @@ const http = require("http"),
 const WIFI_NAME = "RT-WiFi_038F",
   WIFI_OPTIONS = { password: "Q2vU6D3s" };
 
+// 443 port for ssl
+
 const l = console.log.bind(console);
 
 let isFired = false;
