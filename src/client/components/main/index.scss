@@ -2,7 +2,7 @@
   width: 200px;
   margin: 0 auto;
 
-  & > button {
+  & > .led {
     display: block;
     margin: 0 auto;
     width: 100px;
@@ -14,6 +14,32 @@
 
     &:hover {
       cursor: pointer;
+    }
+  }
+
+  & > form {
+    & > .send {
+      display: block;
+      margin: 0 auto;
+      margin-top: 50px;
+      width: 100px;
+      height: 40px;
+      outline: none;
+      border: 1px solid black;
+      background-color: black;
+      color: white;
+      padding: 10px;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    & > input {
+      text-align: center;
+      outline: none;
+      margin: 0 auto;
+      display: block;
     }
   }
 }

@@ -1,4 +1,5 @@
-const { createRequest, l } = require("../../utils");
+const { createRequest, l } = require("../../utils"),
+  { password: pass } = require("../config");
 
 const timeout = 200,
   scanRange = { from: 15, to: 5 };
@@ -23,19 +24,31 @@ const detectDeviceAddr = async () => {
 };
 
 const getHandler = async (req, res) => {
-  const { state } = req.query;
+  const { state, password, init } = req.query;
 
-  const baseURL = `http://192.168.0.${addr}:8080`,
-    request = createRequest({ baseURL, timeout });
+  const getStatus = async () => {
+    const baseURL = `http://192.168.0.${addr}:8080`,
+      request = createRequest({ baseURL, timeout });
 
-  try {
-    const status = await request.get("/esp", {
-      state
-    });
-    res.send(status);
-  } catch (e) {
+    try {
+      const status = await request.get("/esp", {
+        state
+      });
+      res.send({ status });
+    } catch (e) {
+      addr = await detectDeviceAddr();
+      res.send(e.message);
+    }
+  };
+
+  if (init !== undefined) {
     addr = await detectDeviceAddr();
-    res.send(e.message);
+    res.send("initialized");
+  } else {
+    if (state === undefined) {
+      if (password === pass || password === undefined) await getStatus();
+      else res.send({});
+    } else await getStatus();
   }
 };
 

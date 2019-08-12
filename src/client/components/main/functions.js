@@ -4,10 +4,10 @@ import { req } from "../../services/request";
 export default updateState => {
   const toggle = async () => {
     try {
-      const status = await req.get("/esp", {
+      const { status } = await req.get("/esp", {
         params: { state: "toggle" }
       });
-      updateState({ led2: status ? "on" : "off" });
+      if (status !== undefined) updateState({ led2: status ? "on" : "off" });
     } catch (e) {
       l(e);
     }
@@ -16,13 +16,30 @@ export default updateState => {
   const init = () => {
     (async () => {
       try {
-        const status = await req.get("/esp", {});
-        updateState({ led2: status ? "on" : "off" });
+        const info = await req.get("/esp", {
+          params: { init: true }
+        });
+        l(info);
       } catch (e) {
         l(e);
       }
     })();
   };
 
-  return { toggle, init };
+  const login = async (e, { value }) => {
+    e.preventDefault();
+
+    try {
+      const { status } = await req.get("/esp", {
+        params: { password: value }
+      });
+
+      if (status !== undefined)
+        updateState({ isLogged: true, led2: status ? "on" : "off" });
+    } catch (e) {
+      l(e);
+    }
+  };
+
+  return { toggle, init, login };
 };
