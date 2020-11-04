@@ -1,3 +1,3 @@
 /node_modules
 .env
-/src/server/controllers/filmware
+src/server/controllers/filmware.js
