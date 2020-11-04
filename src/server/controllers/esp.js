@@ -1,15 +1,17 @@
 const { createRequest, l } = require("../../utils"),
   { password: pass } = require("../config");
 
+const getBaseURL = (data) => `http://192.168.88.${data}:8080`;
+
 const timeout = 200,
-  scanRange = { from: 15, to: 5 };
+  scanRange = { from: 255, to: 240 };
+
 let addr = scanRange.from;
 
 const detectDeviceAddr = async () => {
   const { from, to } = scanRange;
   for (let i = from; i > to; i--) {
-    const baseURL = `http://192.168.0.${i}:8080`,
-      request = createRequest({ baseURL, timeout });
+    const request = createRequest({ baseURL: getBaseURL(i), timeout });
 
     try {
       await request.get("/esp", {});
@@ -27,13 +29,10 @@ const getHandler = async (req, res) => {
   const { state, password, init } = req.query;
 
   const getStatus = async () => {
-    const baseURL = `http://192.168.0.${addr}:8080`,
-      request = createRequest({ baseURL, timeout });
+    const request = createRequest({ baseURL: getBaseURL(addr), timeout });
 
     try {
-      const status = await request.get("/esp", {
-        state
-      });
+      const status = await request.get("/esp", { state });
       res.send({ status });
     } catch (e) {
       addr = await detectDeviceAddr();

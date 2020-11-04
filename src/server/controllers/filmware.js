@@ -5,8 +5,8 @@ const E = {},
 const http = require("http"),
   wifi = require("Wifi");
 
-const WIFI_NAME = "RT-WiFi_038F",
-  WIFI_OPTIONS = { password: "Q2vU6D3s" };
+const WIFI_NAME = "MikroTik-C77611",
+  WIFI_OPTIONS = { password: "spelleater" };
 
 // 443 port for ssl
 
@@ -27,11 +27,12 @@ const runServer = () => {
       res.end(isFired);
     })
     .listen(8080);
-  l("Connected!");
+
+  wifi.getIP((err, data) => l(`device IP: ${data.ip}`));
 };
 
 E.on("init", () => {
-  wifi.connect(WIFI_NAME, WIFI_OPTIONS, err => {
+  wifi.connect(WIFI_NAME, WIFI_OPTIONS, (err) => {
     if (err) l(`Connection error: ${err}`);
     runServer();
   });
